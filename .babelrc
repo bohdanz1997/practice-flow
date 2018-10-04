@@ -1,6 +1,9 @@
 {
   "presets": [
-    "stage-2",
+    "es2015",
     "flow"
+  ],
+  "plugins": [
+    "transform-class-properties"
   ]
 }
