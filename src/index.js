@@ -42,12 +42,95 @@ const workProgress = animal.reportWorkProgress('hard')
 animal.speak()
 humanizeWorkProgress(workProgress)
 
-class Some {
-  handleClick = () => {
+// functions
 
+const addSome = (a: number, b: number): number => a + b
+addSome(2, 4)
+
+const sum = (...numbers: Array<number>): number => (
+  numbers.reduce((acc, cur) => acc + cur, 0)
+)
+
+type doneCb = (error?: Error | null, value?: string | null) => void
+
+const asyncTask = (done: doneCb) => {
+  done(undefined, null)
+}
+
+// merged types
+type UserT = {|
+  id: number,
+  name: string,
+  createdAt: Date,
+|}
+
+type ProductT = {|
+  id: number,
+  slug: string,
+  price: number,
+|}
+
+type UserProductT = {| ...UserT, ...ProductT |}
+
+const user: UserProductT = {
+  id: 123,
+  name: 'Bob',
+  createdAt: new Date(),
+  slug: 'abs',
+  price: 200,
+}
+
+// arrays
+
+const numbersList: (?ProductT)[] = [
+  { id: 1, slug: 'aaa', price: 200 },
+  { id: 1, slug: 'aaa', price: 200 },
+  null,
+  undefined,
+]
+
+type SomeTuple = [number, boolean, string]
+const tupleVar: SomeTuple = [12, true, 'abc']
+
+// classes
+
+class Human<T> {
+  id: T;
+
+  age: number = 0
+
+  name: string = ''
+
+  alive: boolean = true
+
+  constructor(id: T, name: string, age: number) {
+    this.id = id
+    this.name = name
+    this.age = age
   }
 }
 
-const addNums = (a: number, b :number): number => a + b
+const bob: Human<number> = new Human(2, 'bob', 22)
 
-console.log(addNums(10, 5))
+// interfaces
+
+interface Serializable {
+  serialize(): string;
+}
+
+class Foo {
+  serialize() { return '[Foo]' }
+}
+
+class Bar {
+  serialize() { return '[Bar]' }
+}
+
+const foo: Serializable = new Foo() // Works!
+const bar: Serializable = new Bar() // Works!
+
+interface MyInterface {
+  +propReadOnly: number, // required semicolon or comma
+  -propWriteOnly: number,
+  method(num: number): number
+}
